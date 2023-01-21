@@ -3,7 +3,7 @@ import useFetch from '../hooks/useFetch';
 
 function PlanetTable() {
   const [planets, setPlanets] = useState([]);
-  const { isLoading, error, makeFetch } = useFetch();
+  const { isLoading, makeFetch } = useFetch();
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -12,11 +12,8 @@ function PlanetTable() {
       console.log(data);
     };
     getPlanets();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  if (error) {
-    return <h1>{`Ops, algo de errado não está certo ${error}`}</h1>;
-  }
 
   return (
     <div>
