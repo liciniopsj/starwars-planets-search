@@ -3,6 +3,9 @@ import useFetch from '../hooks/useFetch';
 import filterContext from '../context/FilterContext';
 
 function PlanetTable() {
+  const OPTIONS = [
+    'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
+  ];
   const [planets, setPlanets] = useState([]);
   const [apiData, setApiData] = useState([]);
   const { isLoading, makeFetch } = useFetch();
@@ -15,6 +18,7 @@ function PlanetTable() {
     setComparisonFilter,
     setFilterValue,
   } = useContext(filterContext);
+  const [filterColumnOptions, setFilterColumnOptions] = useState(OPTIONS);
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -23,7 +27,7 @@ function PlanetTable() {
       setPlanets(data.results);
     };
     getPlanets();
-    console.log(apiData);
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -46,6 +50,7 @@ function PlanetTable() {
     const columnPattern = columnFilter;
     const comparisonParameter = comparisonFilter;
     const valueParameter = filterValue;
+    setFilterColumnOptions(filterColumnOptions.filter((e) => !columnPattern.includes(e)));
 
     switch (comparisonParameter) {
     case 'maior que':
@@ -62,7 +67,7 @@ function PlanetTable() {
     }
   };
 
-  const handleFilters = () => {
+  const handleFiltersBtn = () => {
     setPlanets(numericalFilter());
   };
 
@@ -92,11 +97,9 @@ function PlanetTable() {
           value={ columnFilter }
           onChange={ handleChangeOnColumnInput }
         >
-          <option value="population">population</option>
-          <option value="orbital_period">orbital_period</option>
-          <option value="diameter">diameter</option>
-          <option value="rotation_period">rotation_period</option>
-          <option value="surface_water">surface_water</option>
+          {filterColumnOptions.map((option) => (
+            <option key={ option } value={ option }>{option}</option>
+          ))}
         </select>
 
         <select
@@ -123,7 +126,7 @@ function PlanetTable() {
         <button
           type="button"
           data-testid="button-filter"
-          onClick={ handleFilters }
+          onClick={ handleFiltersBtn }
         >
           Aplicar
         </button>
