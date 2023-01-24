@@ -50,16 +50,20 @@ function PlanetTable() {
     const columnPattern = columnFilter;
     const comparisonParameter = comparisonFilter;
     const valueParameter = filterValue;
-    setFilterColumnOptions(filterColumnOptions.filter((e) => !columnPattern.includes(e)));
+    setFilterColumnOptions(filterColumnOptions.filter((e) => !columnFilter.includes(e)));
 
     switch (comparisonParameter) {
     case 'maior que':
+      setColumnFilter(filterColumnOptions[0]);
       return planets.filter((planet) => planet[columnPattern] > +valueParameter);
 
     case 'menor que':
+      setColumnFilter(filterColumnOptions[0]);
+      console.log('xablau', columnFilter, valueParameter);
       return planets.filter((planet) => planet[columnPattern] < +valueParameter);
 
     case 'igual a':
+      setColumnFilter(filterColumnOptions[0]);
       return planets.filter((planet) => planet[columnPattern] === valueParameter);
 
     default:
