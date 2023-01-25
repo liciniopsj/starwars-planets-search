@@ -23,6 +23,11 @@ function PlanetTable() {
     setFilterValue,
   } = useContext(filterContext);
   const [filterColumnOptions, setFilterColumnOptions] = useState(OPTIONS);
+  const tdLoading = [];
+  const THIRTEEN = 13;
+  for (let index = 0; index < THIRTEEN; index += 1) {
+    tdLoading.push('loading...');
+  }
 
   useEffect(() => {
     const getPlanets = async () => {
@@ -220,19 +225,7 @@ function PlanetTable() {
               ))
           ) : (
             <tr>
-              <td>loading...</td>
-              <td>loading...</td>
-              <td>loading...</td>
-              <td>loading...</td>
-              <td>loading...</td>
-              <td>loading...</td>
-              <td>loading...</td>
-              <td>loading...</td>
-              <td>loading...</td>
-              <td>loading...</td>
-              <td>loading...</td>
-              <td>loading...</td>
-              <td>loading...</td>
+              {tdLoading.map((e, index) => (<td key={ index }>{e}</td>))}
             </tr>
           )}
         </tbody>

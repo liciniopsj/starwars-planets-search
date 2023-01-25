@@ -51,7 +51,6 @@ describe('Test', () => {
     await waitForElementToBeRemoved(() => screen.getAllByRole('cell', { name: /loading.../i }));
     const searchbox = screen.getByRole('searchbox');
 
-    expect(searchbox).toBeInTheDocument();
     userEvent.type(searchbox, 'Tatooine');
 
     expect(searchbox.value).toBe('Tatooine');
@@ -150,7 +149,6 @@ describe('Test', () => {
     expect(filterValue.value).toBe('24');
 
     const filterBtn = screen.getByRole('button', { name: /aplicar/i });
-    expect(filterBtn).toBeInTheDocument();
     
     userEvent.click(filterBtn);
 
@@ -176,7 +174,6 @@ describe('Test', () => {
     expect(filterValue.value).toBe('10000000000');
 
     const filterBtn = screen.getByRole('button', { name: /aplicar/i });
-    expect(filterBtn).toBeInTheDocument();
     
     userEvent.click(filterBtn);
 
@@ -207,7 +204,6 @@ describe('Test', () => {
     expect(filterValue.value).toBe('5000');
 
     const filterBtn = screen.getByRole('button', { name: /aplicar/i });
-    expect(filterBtn).toBeInTheDocument();
     
     userEvent.click(filterBtn);
 
@@ -225,38 +221,20 @@ describe('Test', () => {
     );
 
     await waitForElementToBeRemoved(() => screen.getAllByRole('cell', { name: /loading.../i }));
-
+    
     await waitFor(() => {
-      const planet = screen.getByText(/tatooine/i);
-      expect(planet).toBeInTheDocument();
-    });
-
-    await waitFor(() => {
-      const planet = screen.getByText(/Endor/i);
-      expect(planet).toBeInTheDocument();
-    });
-
-    await waitFor(() => {
-      const planet = screen.getByText(/alderaan/i);
-      expect(planet).toBeInTheDocument();
-    });
-
-    await waitFor(() => {
-      const planet = screen.getByText(/Yavin IV/i);
-      expect(planet).toBeInTheDocument();
-    });
-
-    await waitFor(() => {
-      const planet = screen.getByText(/Hoth/i);
-      expect(planet).toBeInTheDocument();
-    });
-
-    await waitFor(() => {
-      const planet = screen.getByText(/Dagobah/i);
-      expect(planet).toBeInTheDocument();
-    });
-
-    await waitFor(() => {
+      const alderaan = screen.getByText(/alderaan/i);
+      expect(alderaan).toBeInTheDocument();
+      const yavin = screen.getByText(/Yavin IV/i);
+      expect(yavin).toBeInTheDocument();
+      const hoth = screen.getByText(/Hoth/i);
+      expect(hoth).toBeInTheDocument();
+      const dagobah = screen.getByText(/Dagobah/i);
+      expect(dagobah).toBeInTheDocument();
+      const endor = screen.getByText(/endor/i);
+      expect(endor).toBeInTheDocument();
+      const tatooine = screen.getByText(/tatooine/i);
+      expect(tatooine).toBeInTheDocument();
       const planet = screen.getByText(/Bespin/i);
       const planet2 = screen.getByText(/Naboo/i);
       const planet3 = screen.getByText(/Coruscant/i);
@@ -265,12 +243,10 @@ describe('Test', () => {
       expect(planet2).toBeInTheDocument();
       expect(planet3).toBeInTheDocument();
       expect(planet4).toBeInTheDocument();
-    });
-
-    await waitFor(async () => {
       const row = screen.getAllByRole('row');
       expect(row.length).toBe(11);
     });
+
   });
 
   test('Sort table', async () => {
@@ -283,7 +259,6 @@ describe('Test', () => {
     await waitForElementToBeRemoved(() => screen.getAllByRole('cell', { name: /loading.../i }));
 
     const columnSort = screen.getByTestId('column-sort');
-    expect(columnSort).toBeInTheDocument();
     expect(columnSort.value).toBe('population');
 
     userEvent.selectOptions(columnSort, 'orbital_period');
@@ -303,9 +278,6 @@ describe('Test', () => {
     const sortASC = screen.getByTestId('column-sort-input-asc');
     const sortDESC = screen.getByTestId('column-sort-input-desc');
 
-    expect(sortASC).toBeInTheDocument();
-    expect(sortDESC).toBeInTheDocument();
-
     expect(sortASC).not.toBeChecked();
     expect(sortDESC).not.toBeChecked();
 
@@ -315,7 +287,6 @@ describe('Test', () => {
     expect(sortASC).not.toBeChecked();
 
     const filterBtn = screen.getByRole('button', { name: /ordenar/i });
-    expect(filterBtn).toBeInTheDocument();
     
     userEvent.click(filterBtn);
         
