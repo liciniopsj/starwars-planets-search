@@ -44,12 +44,8 @@ function PlanetTable() {
     const { order: { column, sort } } = tableSort;
     const toSort = [...planets];
 
-    toSort.sort((a, b) => {
-      if (sort === 'ASC') {
-        return a[column] - b[column];
-      }
-      return b[column] - a[column];
-    });
+    if (sort === 'ASC') toSort.sort((a, b) => a[column] - b[column]);
+    if (sort === 'DESC') toSort.sort((a, b) => b[column] - a[column]);
 
     const top = toSort.filter((e) => e[column] !== 'unknown');
     const bot = toSort.filter((e) => e[column] === 'unknown');
