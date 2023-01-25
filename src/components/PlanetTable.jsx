@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import useFetch from '../hooks/useFetch';
 import filterContext from '../context/FilterContext';
 
 function PlanetTable() {
@@ -7,9 +6,10 @@ function PlanetTable() {
     'population', 'orbital_period', 'diameter', 'rotation_period', 'surface_water',
   ];
   const [planets, setPlanets] = useState([]);
-  const [apiData, setApiData] = useState([]);
-  const { isLoading, makeFetch } = useFetch();
+  // const [apiData, setApiData] = useState([]);
+  // const { isLoading, makeFetch } = useFetch();
   const [nameFilter, setNameFilter] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const {
     columnFilter,
     comparisonFilter,
@@ -22,9 +22,18 @@ function PlanetTable() {
 
   useEffect(() => {
     const getPlanets = async () => {
-      const data = await makeFetch('https://swapi.dev/api/planets');
-      setApiData(data.results);
-      setPlanets(data.results);
+      // const data = await makeFetch('https://swapi.dev/api/planets');
+      // setApiData(data.results);
+      // setPlanets(data.results);
+      try {
+        setIsLoading(true);
+        const promise = await fetch('https://swapi.dev/api/planets');
+        const data = await promise.json();
+        // setApiData(data.results);
+        setPlanets(data.results);
+      } finally {
+        setIsLoading(false);
+      }
     };
     getPlanets();
 
@@ -52,22 +61,19 @@ function PlanetTable() {
     const valueParameter = filterValue;
     setFilterColumnOptions(filterColumnOptions.filter((e) => !columnFilter.includes(e)));
 
-    switch (comparisonParameter) {
-    case 'maior que':
+    if (comparisonParameter === 'maior que') {
       setColumnFilter(filterColumnOptions[0]);
       return planets.filter((planet) => planet[columnPattern] > +valueParameter);
+    }
 
-    case 'menor que':
+    if (comparisonParameter === 'menor que') {
       setColumnFilter(filterColumnOptions[0]);
-      console.log('xablau', columnFilter, valueParameter);
       return planets.filter((planet) => planet[columnPattern] < +valueParameter);
+    }
 
-    case 'igual a':
+    if (comparisonParameter === 'igual a') {
       setColumnFilter(filterColumnOptions[0]);
       return planets.filter((planet) => planet[columnPattern] === valueParameter);
-
-    default:
-      break;
     }
   };
 
@@ -75,14 +81,8 @@ function PlanetTable() {
     setPlanets(numericalFilter());
   };
 
-  const debugButton = () => {
-    console.log(columnFilter, comparisonFilter, filterValue);
-    console.log(planets, apiData);
-  };
-
   return (
     <div>
-      <button type="button" onClick={ debugButton }>Debug</button>
       <input
         type="search"
         name="nameFilter"
