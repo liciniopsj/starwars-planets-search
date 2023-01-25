@@ -271,6 +271,67 @@ describe('Test', () => {
       const row = screen.getAllByRole('row');
       expect(row.length).toBe(11);
     });
+  });
+
+  test('Sort table', async () => {
+    render(
+      <NumericalFiltersProvider>
+        <App />
+      </NumericalFiltersProvider>
+    );
+
+    await waitForElementToBeRemoved(() => screen.getAllByRole('cell', { name: /loading.../i }));
+
+    const columnSort = screen.getByTestId('column-sort');
+    expect(columnSort).toBeInTheDocument();
+    expect(columnSort.value).toBe('population');
+
+    userEvent.selectOptions(columnSort, 'orbital_period');
+    expect(columnSort.value).toBe('orbital_period');
+
+    userEvent.selectOptions(columnSort, 'diameter');
+    expect(columnSort.value).toBe('diameter');
+
+    userEvent.selectOptions(columnSort, 'rotation_period');
+    expect(columnSort.value).toBe('rotation_period');
+
+    userEvent.selectOptions(columnSort, 'surface_water');
+    expect(columnSort.value).toBe('surface_water');
+
+    userEvent.selectOptions(columnSort, 'population');
+
+    const sortASC = screen.getByTestId('column-sort-input-asc');
+    const sortDESC = screen.getByTestId('column-sort-input-desc');
+
+    expect(sortASC).toBeInTheDocument();
+    expect(sortDESC).toBeInTheDocument();
+
+    expect(sortASC).not.toBeChecked();
+    expect(sortDESC).not.toBeChecked();
+
+    userEvent.click(sortDESC);
+
+    expect(sortDESC).toBeChecked();
+    expect(sortASC).not.toBeChecked();
+
+    const filterBtn = screen.getByRole('button', { name: /ordenar/i });
+    expect(filterBtn).toBeInTheDocument();
+    
+    userEvent.click(filterBtn);
+        
+    await waitFor(() => {
+      const row = screen.getAllByRole('row');
+      expect(row.length).toBe(11);
+      expect(row[1].childNodes[0].textContent).toBe('Coruscant');
+    });
+    
+    userEvent.click(sortASC);
+    userEvent.click(filterBtn);
+    
+    await waitFor(() => {
+      const row = screen.getAllByRole('row');
+      expect(row[1].childNodes[0].textContent).toBe('Yavin IV');
+    });
 
   });
 });
